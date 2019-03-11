@@ -34,9 +34,12 @@ if(t_target.v_FD_ExtendScale){
 var t_length = vector_Length(t_offset)
 var t_offangle = t_flockAngle + vector_ToAngle(t_offset)
 t_offset = vector_Multiply(vector_Unitization(vector_FromAngle(t_offangle)), t_length)
-
+if(t_isRev == -1){//计算翻转对称
+	var t_cent = vector_FromAngle(t_flockAngle + 90) //90为对称轴为y轴时
+	t_offset = vector_SymmetryVectory(t_offset, t_cent)
+}
 //定位坐标
-t_target.x = t_oric[0] + t_offset[0] * t_scale[0] * t_isRev
+t_target.x = t_oric[0] + t_offset[0] * t_scale[0]
 t_target.y = t_oric[1] + t_offset[1] * t_scale[1]
 t_scale[0] *= t_isRev //尝试翻转X
 t_target.image_xscale = t_scale[0]
@@ -46,8 +49,6 @@ var t_angle = t_flockAngle  //原始角度
 t_angle += t_isRev * (t_target.v_FD_MotionAngle + t_target.v_FD_Towards)
 
 t_target.image_angle = t_angle
-
-
 
 if(t_target.v_FD_Amount == 0){
 	exit
